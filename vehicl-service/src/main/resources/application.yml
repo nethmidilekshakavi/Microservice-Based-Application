@@ -7,6 +7,18 @@ spring:
   application:
     name: vehicle-service
 
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/smart_parking_db
+    username: root
+    password: 1234
+
+  jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      database-platform: org.hibernate.dialect.MySQL8Dialect
+
 eureka:
   client:
     serviceUrl:

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
         userEntity user = userRepo.findById(id).orElse(null);
 
-        if (user != null){
+        if (user != null) {
             user.setName(userDto.getName());
             user.setRole(userDto.getRole());
             user.setEmail(userDto.getEmail());
@@ -43,7 +43,23 @@ public class UserServiceImpl implements UserService {
             userRepo.save(user);
 
             return true;
+        } else {
+            return false;
         }
-        return false;
+
+    }
+
+    @Override
+    public boolean userDelete(Long id) {
+
+        Optional<userEntity> optionalUser = userRepo.findById(id);
+
+        if (optionalUser.isPresent()){
+            userRepo.deleteById(id);
+            return true;
+        }else {
+            return false;
+        }
+
     }
 }

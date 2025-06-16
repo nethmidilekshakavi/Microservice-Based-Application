@@ -8,4 +8,6 @@ public interface UserService {
     boolean userSave(UserDto userDto);
 
     boolean userUpdate(Long id,UserDto userDto);
+
+    boolean userDelete(Long id);
 }

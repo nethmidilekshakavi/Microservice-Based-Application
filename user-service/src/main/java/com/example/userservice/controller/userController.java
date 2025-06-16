@@ -39,10 +39,12 @@ public class userController {
 
         if (!save){
 
-          return  new ResponseEntity<Void>(HttpStatus.CREATED);
+          return  new ResponseEntity<>(HttpStatus.OK);
 
+        }else {
+             new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
@@ -50,26 +52,37 @@ public class userController {
     @PutMapping(value = "update/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable ("id") Long id,
                                            @RequestBody UserDto userDto) {
-
-
-
-
         try {
-
-
 
             boolean save = userService.userUpdate(id, userDto);
 
             if (save) {
-                new ResponseEntity<Void>(HttpStatus.CREATED);
+                new ResponseEntity<Void>(HttpStatus.OK);
             }
+            new ResponseEntity<Void>(HttpStatus.OK);
 
         } catch (Exception e) {
 
-            new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
-       return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> deleteUser (@PathVariable ("id") Long id){
+
+        boolean save = userService.userDelete(id);
+
+        if (save){
+            new ResponseEntity<Void>(HttpStatus.OK);
+        }else {
+            new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 

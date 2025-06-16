@@ -2,6 +2,7 @@ package com.example.userservice.controller;
 
 
 import com.example.userservice.Dto.UserDto;
+import com.example.userservice.entity.userEntity;
 import com.example.userservice.repo.UserRepo;
 import com.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,39 @@ public class userController {
 
         boolean save = userService.userSave(userDto);
 
-        if (save){
+        if (!save){
 
-            new ResponseEntity<Void>(HttpStatus.CREATED);
+          return  new ResponseEntity<Void>(HttpStatus.CREATED);
 
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
+
+    @PutMapping(value = "update/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable ("id") Long id,
+                                           @RequestBody UserDto userDto) {
+
+
+
+
+        try {
+
+
+
+            boolean save = userService.userUpdate(id, userDto);
+
+            if (save) {
+                new ResponseEntity<Void>(HttpStatus.CREATED);
+            }
+
+        } catch (Exception e) {
+
+            new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+       return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 

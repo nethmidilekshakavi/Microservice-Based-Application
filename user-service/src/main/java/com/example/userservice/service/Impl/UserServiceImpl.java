@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -21,9 +23,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean userSave(UserDto userDto) {
+        userRepo.save(modelMapper.map(userDto,userEntity.class));
+        return true;
+    }
 
-           userRepo.save(modelMapper.map(userDto,userEntity.class));
+    @Override
+    public boolean userUpdate(Long id, UserDto userDto) {
+
+        userEntity user = userRepo.findById(id).orElse(null);
+
+        if (user != null){
+            user.setName(userDto.getName());
+            user.setRole(userDto.getRole());
+            user.setEmail(userDto.getEmail());
+            user.setPassword(userDto.getPassword());
+
+            System.out.println(user);
+
+            userRepo.save(user);
 
             return true;
+        }
+        return false;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/v1/user")
 public class userController {
@@ -84,6 +86,22 @@ public class userController {
 
         return new ResponseEntity<>(HttpStatus.OK);
 
+    }
+
+    @PutMapping("updateRole/{id}")
+    public ResponseEntity<Void> updateRole (@PathVariable ("id") Long  id){
+
+        Optional<userEntity> optionalUser = userRepo.findById(id);
+
+        if (optionalUser.isPresent()){
+            userEntity user = optionalUser.get();
+            user.setRole("ADMIN");
+            userRepo.save(user);
+        }else {
+            new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

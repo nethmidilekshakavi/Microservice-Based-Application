@@ -6,9 +6,11 @@ import com.example.userservice.repo.UserRepo;
 import com.example.userservice.service.UserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,5 +63,10 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+    }
+
+    @Override
+    public List<userEntity> getAllUsers() {
+        return modelMapper.map(userRepo.findAll(), new TypeToken<List<UserDto>>(){}.getType());
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,8 +24,8 @@ public class userController {
     private UserRepo userRepo;
 
     @GetMapping("/all")
-    public String getUser(){
-        return "user service";
+    public List<userEntity> getUser(){
+        return userService.getAllUsers();
     }
 
 

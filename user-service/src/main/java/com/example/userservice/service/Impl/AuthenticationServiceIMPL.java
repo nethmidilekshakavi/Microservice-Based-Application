@@ -37,12 +37,15 @@ public class AuthenticationServiceIMPL implements AuthenticationService {
     public static String userRoleget = "";
     public static int userIDget = 0;
     public static String  UserNameGet = "";
-
+    public static String  ProPic = "";
 
     @Override
     public JWTAuthResponse signUp(SignUp signUp){
         UserDto userDTO =UserDto.builder()
                 .email(signUp.getEmail())
+                .name(signUp.getName())
+                .role(signUp.getRole())
+                .image(signUp.getImage())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .build();
         userEntity userEntity1 = modelMapper.map(userDTO, userEntity.class);
@@ -76,19 +79,30 @@ public class AuthenticationServiceIMPL implements AuthenticationService {
 
         userIDget = Math.toIntExact(userEntity.getUserId());
 
+        byte[] profilePicBytes = userEntity.getImage().getBytes();
 
+
+        String profilePicBase64 = null;
+        if (profilePicBytes.length > 0) {
+            profilePicBase64 = Base64.getEncoder().encodeToString(profilePicBytes);
+        }
+
+        ProPic = profilePicBase64;
 
         System.out.println(userRoleget);
         System.out.println(userIDget);
         System.out.println(UserNameGet);
+        System.out.println("Pro Pic " +ProPic);
+
 
 
 
         return JWTAuthResponse.builder()
                 .tokens(generateToken)
-                .userName(UserNameGet)
+                .name(UserNameGet)
                 .userId(userIDget)
                 .role(userRoleget)
+                .proPic(ProPic)
                 .build();
     }
 

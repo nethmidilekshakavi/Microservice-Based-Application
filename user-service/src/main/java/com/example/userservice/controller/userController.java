@@ -29,7 +29,7 @@ public class userController {
     }
 
 
-    @PostMapping("save")
+    /*@PostMapping("save")
     public ResponseEntity<Void> saveUser(@RequestBody UserDto userDto){
 
         String setRole = "USER";
@@ -50,7 +50,7 @@ public class userController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
-
+*/
 
     @PutMapping(value = "update/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable ("id") Long id,

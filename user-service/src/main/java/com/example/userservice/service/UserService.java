@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    boolean userSave(UserDto userDto);
+//    boolean userSave(UserDto userDto);
 
     boolean userUpdate(Long id,UserDto userDto);
 

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class JWTAuthResponse {
     private String tokens;
     private String role;
-    private String userName;
+    private String name;
     private int userId;
     @Column(columnDefinition = "LONGTEXT")
     private String proPic;

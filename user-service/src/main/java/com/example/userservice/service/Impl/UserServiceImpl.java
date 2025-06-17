@@ -27,11 +27,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
 
-    @Override
+   /* @Override
     public boolean userSave(UserDto userDto) {
         userRepo.save(modelMapper.map(userDto,userEntity.class));
         return true;
-    }
+    }*/
 
     @Override
     public boolean userUpdate(Long id, UserDto userDto) {

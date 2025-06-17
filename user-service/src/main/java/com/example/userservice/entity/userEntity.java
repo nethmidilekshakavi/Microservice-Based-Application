@@ -24,7 +24,10 @@ public class userEntity implements UserDetails {
     private String name;
     private String email;
     private String password;
-    private String role;
+    private String role = "USER";
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String image;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

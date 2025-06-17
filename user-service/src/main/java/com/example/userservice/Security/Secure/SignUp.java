@@ -16,6 +16,12 @@ public class SignUp {
     private String email;
     @NotNull(message = "weak password")
     private String password;
+    @NotNull(message = "name cannot be null")
+    private String name;
+    @NotNull(message = "role cannot be null")
+    private String role ;
+    @NotNull(message = "proPic cannot be null")
+    private String image;
 
 
 

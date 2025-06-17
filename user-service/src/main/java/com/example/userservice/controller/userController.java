@@ -8,6 +8,7 @@ import com.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,35 +24,14 @@ public class userController {
     @Autowired
     private UserRepo userRepo;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/all")
     public List<userEntity> getUser(){
         return userService.getAllUsers();
     }
 
 
-    /*@PostMapping("save")
-    public ResponseEntity<Void> saveUser(@RequestBody UserDto userDto){
-
-        String setRole = "USER";
-
-        userDto.setRole(setRole);
-
-        System.out.println(userDto);
-
-        boolean save = userService.userSave(userDto);
-
-        if (!save){
-
-          return  new ResponseEntity<>(HttpStatus.OK);
-
-        }else {
-             new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
-
-    }
-*/
-
+    @PreAuthorize("hasAnyRole('USER')")
     @PutMapping(value = "update/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable ("id") Long id,
                                            @RequestBody UserDto userDto) {
@@ -74,6 +54,7 @@ public class userController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteUser (@PathVariable ("id") Long id){
 
@@ -89,6 +70,7 @@ public class userController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("updateRole/{id}")
     public ResponseEntity<Void> updateRole (@PathVariable ("id") Long  id){
 

@@ -1,18 +1,13 @@
 package com.example.userservice.Dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Builder
-public class UserDto {
-    private String name;
+public class PasswordDto {
     private String email;
-    private String password;
-    private String role;
-
+    private String newPassword;
 }

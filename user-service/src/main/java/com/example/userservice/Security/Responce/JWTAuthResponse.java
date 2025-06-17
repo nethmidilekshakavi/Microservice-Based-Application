@@ -1,0 +1,22 @@
+package com.example.userservice.Security.Responce;
+
+import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class JWTAuthResponse {
+    private String tokens;
+    private String role;
+    private String userName;
+    private int userId;
+    @Column(columnDefinition = "LONGTEXT")
+    private String proPic;
+
+
+}

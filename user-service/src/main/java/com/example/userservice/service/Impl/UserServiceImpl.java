@@ -1,6 +1,8 @@
 package com.example.userservice.service.Impl;
 
 import com.example.userservice.Dto.UserDto;
+import com.example.userservice.Dto.UserWithKey;
+import com.example.userservice.Exception.NotFoundException;
 import com.example.userservice.entity.userEntity;
 import com.example.userservice.repo.UserRepo;
 import com.example.userservice.service.UserService;
@@ -8,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,5 +72,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<userEntity> getAllUsers() {
         return modelMapper.map(userRepo.findAll(), new TypeToken<List<UserDto>>(){}.getType());
+    }
+
+    @Override
+    public boolean sendCodeToChangePassword(UserWithKey userWithKey) {
+        Optional<userEntity> byEmail = userRepo.findByEmail((userWithKey.getEmail()));
+        if (byEmail.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return username ->
+                (UserDetails) userRepo.findByEmail(username).
+                        orElseThrow(() -> new NotFoundException("User Name Not Found"));
+
     }
 }

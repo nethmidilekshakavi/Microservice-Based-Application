@@ -51,6 +51,9 @@ public class JWTServiceIMPL implements JWTService {
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
+        System.out.println("Validating token for user: " + userName);
+        System.out.println("UserDetails username: " + userDetails.getUsername());
+        System.out.println("Token expired: " + isTokenExpired(token));
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
@@ -101,6 +104,7 @@ public class JWTServiceIMPL implements JWTService {
         claims.put("role", user.getRole());
         claims.put("userId", user.getUserId());
         claims.put("name", user.getName());
+
 
         return generateToken(claims, user.getEmail());
     }

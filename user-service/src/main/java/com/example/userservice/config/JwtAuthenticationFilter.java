@@ -23,34 +23,64 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final JWTService jwtService;
     private final UserService userService;
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+
         final String authHeader = request.getHeader("Authorization");
+        System.out.println("------ Filter started ------");
+        System.out.println(authHeader);
+
         final String jwt;
         final String userEmail;
-        if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUserName(jwt);
-        if (StringUtils.isNotEmpty(userEmail)
-                && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.userDetailsService()
-                    .loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                context.setAuthentication(authToken);
-                SecurityContextHolder.setContext(context);
+
+        try {
+            if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, "Bearer ")) {
+                System.out.println("Authorization header missing or invalid");
+                filterChain.doFilter(request, response);
+                return;
             }
+
+
+            jwt = authHeader.substring(7);
+            userEmail = jwtService.extractUserName(jwt);
+            System.out.println("Extracted JWT: " + jwt);
+            System.out.println("Extracted Email: " + userEmail);
+
+            if (StringUtils.isNotEmpty(userEmail)
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails = userService.userDetailsService()
+                        .loadUserByUsername(userEmail);
+
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    System.out.println("JWT is valid. Setting authentication...");
+
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    context.setAuthentication(authToken);
+                    SecurityContextHolder.setContext(context);
+                } else {
+                    System.out.println("JWT is NOT valid.");
+                }
+            }
+
+            filterChain.doFilter(request, response);
+            System.out.println("------ Filter completed ------");
+
+        } catch (Exception e) {
+            System.out.println("Exception occurred in JwtAuthenticationFilter: " + e.getMessage());
+            e.printStackTrace();
+            filterChain.doFilter(request, response); // still continue chain even if something failed
         }
-        filterChain.doFilter(request, response);
     }
 }

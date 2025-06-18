@@ -10,10 +10,12 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,11 +85,19 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+
+
     @Override
     public UserDetailsService userDetailsService() {
-        return username ->
-                (UserDetails) userRepo.findByEmail(username).
-                        orElseThrow(() -> new NotFoundException("User Name Not Found"));
+        return username -> {
+            userEntity user = userRepo.findByEmail(username)
+                    .orElseThrow(() -> new NotFoundException("User Name Not Found"));
 
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    user.getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
+            );
+        };
     }
 }

@@ -10,35 +10,38 @@ spring:
           uri: lb://PARKING-SERVICE
           predicates:
             - Path=/parking-service/**
+          filters:
+            - StripPrefix=1
+            - PreserveHostHeader
 
         - id: vehicle-service
           uri: lb://VEHICLE-SERVICE
           predicates:
             - Path=/vehicle-service/**
+          filters:
+            - StripPrefix=1
+            - PreserveHostHeader
 
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
+          filters:
+            - StripPrefix=1
+            - PreserveHostHeader
 
         - id: payment-service
           uri: lb://PAYMENT-SERVICE
           predicates:
             - Path=/payment-service/**
+          filters:
+            - StripPrefix=1
+            - PreserveHostHeader
 
 jwt:
   secret: 2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566DF423F4428472B4B6250655368566D
-
-
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
-
-
-#  http://localhost:8081/vehicle-service/api/v1/vehicle/all
-#  http://localhost:8080/user-service/api/v1/user/all
-#  http://localhost:8082/parking-service/api/v1/parking/all
-#  http://localhost:8083/payment-service/api/v1/payment/all

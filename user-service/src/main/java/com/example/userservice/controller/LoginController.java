@@ -32,13 +32,6 @@ public class LoginController {
         return ResponseEntity.ok(authenticationService.signIn(signIn));
     }
 
-    @GetMapping("/validate")
-    public ResponseEntity<?> validateToken(@RequestParam("token") String token) {
-        boolean isValid = jwtService.validateToken(token);
-        return isValid ? ResponseEntity.ok("Valid") : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-
-
 
     @PostMapping(value = "/signUp",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JWTAuthResponse> saveUser(@RequestPart ("name") String name,

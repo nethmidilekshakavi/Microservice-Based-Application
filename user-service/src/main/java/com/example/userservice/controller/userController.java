@@ -4,8 +4,11 @@ package com.example.userservice.controller;
 import com.example.userservice.Dto.UserDto;
 import com.example.userservice.entity.userEntity;
 import com.example.userservice.repo.UserRepo;
+import com.example.userservice.service.JWTService;
 import com.example.userservice.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,12 +27,50 @@ public class userController {
     @Autowired
     private UserRepo userRepo;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping("/all")
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private  JWTService jwtService;
+
+
+  /*  @GetMapping("/all")
     public List<userEntity> getUser(){
         return userService.getAllUsers();
-    }
+    }*/
 
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+
+        System.out.println("GET POST");
+
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing Token");
+            }
+
+            String token = authHeader.substring(7);
+            if (!jwtService.validateToken(token)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Token");
+            }
+
+            // token is valid → continue to fetch user data
+            List<userEntity> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        }
+
+
+    @GetMapping("getUserId/{id}")
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
+        Optional<userEntity> userOpt = userRepo.findById(id);
+
+        if (userOpt.isPresent()) {
+            UserDto dto = modelMapper.map(userOpt.get(), UserDto.class);
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PreAuthorize("hasAnyRole('USER')")
     @PutMapping(value = "update/{id}")
@@ -46,7 +87,7 @@ public class userController {
 
         } catch (Exception e) {
 
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 

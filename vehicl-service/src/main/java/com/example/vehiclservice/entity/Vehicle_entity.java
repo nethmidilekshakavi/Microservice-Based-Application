@@ -2,6 +2,7 @@ package com.example.vehiclservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,10 +15,29 @@ public class Vehicle_entity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicleId;
 
-    private String vehicleNumber; // වාහන අංකය
-    private String type; // වාහනයේ වර්ගය (Car, Van, Bike වැනි)
+    @Column(nullable = false)
+    private String plateNumber;
 
-////    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private  user; // වාහනයට අයත් පරිශීලකයා
+    @Column(nullable = false)
+    private String brand;
+
+    @Column(nullable = false)
+    private String model;
+
+    private String color;
+
+    @Column(nullable = false)
+    private String type;
+
+    @Column
+    private boolean isParked = false;
+
+    @Column(nullable = false)
+    private Long userId;
+
+    @Column
+    private String entryTime;
+
+    @Column
+    private String exitTime;
 }

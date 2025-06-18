@@ -17,17 +17,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceIMPL implements AuthenticationService {
+
     private final ModelMapper modelMapper;
     private final UserRepo userDao;
     private final JWTService jwtService;
@@ -40,66 +42,56 @@ public class AuthenticationServiceIMPL implements AuthenticationService {
     public static String  ProPic = "";
 
     @Override
-    public JWTAuthResponse signUp(SignUp signUp){
-        UserDto userDTO =UserDto.builder()
+    public JWTAuthResponse signUp(SignUp signUp) {
+        UserDto userDTO = UserDto.builder()
                 .email(signUp.getEmail())
                 .name(signUp.getName())
                 .role(signUp.getRole())
                 .image(signUp.getImage())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .build();
+
         userEntity userEntity1 = modelMapper.map(userDTO, userEntity.class);
-        System.out.println(userEntity1);
         userDao.save(userEntity1);
-        System.out.println(userEntity1);
+
         String generateToken = jwtService.generateToken(userEntity1);
-        return JWTAuthResponse.builder().tokens(generateToken).build();
 
-
+        return JWTAuthResponse.builder()
+                .tokens(generateToken)
+                .build();
     }
 
     @Override
     public JWTAuthResponse signIn(SignIn signIn) {
 
-
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signIn.getEmail(), signIn.getPassword())
         );
 
-
         userEntity userEntity = userDao.findByEmail(signIn.getEmail())
                 .orElseThrow(() -> new NotFoundException("User Not Found"));
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", userEntity.getRole());
+        claims.put("userId", userEntity.getUserId());
+        claims.put("name", userEntity.getName());
 
-        var generateToken = jwtService.generateToken((UserDetails) userEntity);
+        String generateToken = jwtService.generateToken(claims, userEntity.getEmail());
         System.out.println("==================================  :" + generateToken);
 
-
         userRoleget = String.valueOf(userEntity.getRole());
-
         userIDget = Math.toIntExact(userEntity.getUserId());
 
-        byte[] profilePicBytes = userEntity.getImage().getBytes();
-
-
         String profilePicBase64 = null;
-        if (profilePicBytes.length > 0) {
+        if (userEntity.getImage() != null && userEntity.getImage().length() > 0) {
+            byte[] profilePicBytes = userEntity.getImage().getBytes();
             profilePicBase64 = Base64.getEncoder().encodeToString(profilePicBytes);
         }
-
         ProPic = profilePicBase64;
-
-        System.out.println(userRoleget);
-        System.out.println(userIDget);
-        System.out.println(UserNameGet);
-        System.out.println("Pro Pic " +ProPic);
-
-
-
 
         return JWTAuthResponse.builder()
                 .tokens(generateToken)
-                .name(UserNameGet)
+                .name(userEntity.getName())
                 .userId(userIDget)
                 .role(userRoleget)
                 .proPic(ProPic)
@@ -109,10 +101,20 @@ public class AuthenticationServiceIMPL implements AuthenticationService {
 
 
     @Override
+        public String validateToken(String token) {
+        System.out.println("validate");
+        try {
+            return jwtService.extractUserName(token);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public JWTAuthResponse refreshToken(String refreshToken) {
         String user =jwtService.extractUserName(refreshToken);
         userEntity findUser =userDao.findByEmail(user).orElseThrow(()-> new NotFoundException("Couldn't find User"));
-        String token =jwtService.refreshToken((UserDetails) findUser);
+        String token =jwtService.refreshToken( findUser);
         return JWTAuthResponse.builder().tokens(token).build();
     }
 
@@ -132,4 +134,6 @@ public class AuthenticationServiceIMPL implements AuthenticationService {
         }
         throw new IllegalStateException("No authenticated user found");
     }
+
+
 }

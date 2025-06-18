@@ -10,5 +10,6 @@ public interface AuthenticationService {
     JWTAuthResponse signUp(SignUp signUp);
     JWTAuthResponse signIn(SignIn signIn);
     JWTAuthResponse refreshToken(String refreshToken);
+    String validateToken(String token);
     void changePassword(PasswordDto passwordDto);
 }

@@ -29,6 +29,8 @@ public class userEntity implements UserDetails {
     @Column(columnDefinition = "LONGTEXT")
     private String image;
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -58,4 +60,6 @@ public class userEntity implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+
 }

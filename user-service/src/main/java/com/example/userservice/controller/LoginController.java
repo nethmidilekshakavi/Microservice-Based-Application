@@ -5,7 +5,9 @@ import com.example.userservice.Security.Secure.SignIn;
 import com.example.userservice.Security.Secure.SignUp;
 import com.example.userservice.Util.PicEncoder;
 import com.example.userservice.service.AuthenticationService;
+import com.example.userservice.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
@@ -18,14 +20,25 @@ import org.springframework.web.multipart.MultipartFile;
 public class LoginController {
 
 
+    @Autowired
+    JWTService jwtService;
 
     @Autowired
     private AuthenticationService authenticationService;
     @PostMapping(value = "/signIn")
     public ResponseEntity<JWTAuthResponse> signIN(@RequestBody SignIn signIn){
+
         System.out.println("sign in unaaa");
         return ResponseEntity.ok(authenticationService.signIn(signIn));
     }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestParam("token") String token) {
+        boolean isValid = jwtService.validateToken(token);
+        return isValid ? ResponseEntity.ok("Valid") : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+
 
     @PostMapping(value = "/signUp",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JWTAuthResponse> saveUser(@RequestPart ("name") String name,

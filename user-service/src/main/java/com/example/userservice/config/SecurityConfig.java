@@ -58,17 +58,15 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests
-                        (req->req.requestMatchers("api/Login/auth/**")
-                        .permitAll()
-                                .requestMatchers("api/v1/user/save/**")
-                                .permitAll()
-
-                        .anyRequest()
-
-                        .authenticated())
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/api/Login/auth/**").permitAll()
+                        .requestMatchers("/api/v1/user/save/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
     @Bean

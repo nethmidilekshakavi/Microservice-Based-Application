@@ -7,10 +7,8 @@ import com.example.userservice.Util.PicEncoder;
 import com.example.userservice.service.AuthenticationService;
 import com.example.userservice.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,11 +24,12 @@ public class LoginController {
     @Autowired
     private AuthenticationService authenticationService;
     @PostMapping(value = "/signIn")
-    public ResponseEntity<JWTAuthResponse> signIN(@RequestBody SignIn signIn){
-
-        System.out.println("sign in unaaa");
+    public ResponseEntity<JWTAuthResponse> signIN(@RequestBody SignIn signIn, @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        System.out.println("Login Request with Authorization header: " + authHeader);
         return ResponseEntity.ok(authenticationService.signIn(signIn));
     }
+
+
 
 
     @PostMapping(value = "/signUp",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

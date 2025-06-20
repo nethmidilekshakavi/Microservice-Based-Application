@@ -25,4 +25,6 @@ public class VehiclServiceApplication {
         return new RestTemplate();
     }
 
+
+
 }

@@ -20,6 +20,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
 
+jwt:
+  secret: 2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566DF423F4428472B4B6250655368566D
 
 eureka:
   client:

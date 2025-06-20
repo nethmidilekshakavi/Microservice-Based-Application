@@ -1,42 +1,41 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: api-gateway
+
   cloud:
     loadbalancer:
       rule: random
     gateway:
+      default-filters:
+        - AddResponseHeader=X-Gateway, Passed
+
       routes:
         - id: parking-service
           uri: lb://PARKING-SERVICE
           predicates:
             - Path=/parking-service/**
-          filters:
-            - StripPrefix=1
-            - PreserveHostHeader
+
 
         - id: vehicle-service
           uri: lb://VEHICLE-SERVICE
           predicates:
             - Path=/vehicle-service/**
-          filters:
-            - StripPrefix=1
-            - PreserveHostHeader
+
 
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
-          filters:
-            - StripPrefix=1
-            - PreserveHostHeader
+
 
         - id: payment-service
           uri: lb://PAYMENT-SERVICE
           predicates:
             - Path=/payment-service/**
-          filters:
-            - StripPrefix=1
-            - PreserveHostHeader
+
 
 jwt:
   secret: 2D4A614E645267556B58703273357638792F423F4428472B4B6250655368566DF423F4428472B4B6250655368566D

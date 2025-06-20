@@ -41,23 +41,24 @@ public class userController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsers(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public ResponseEntity<?> getAllUsers(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
 
         System.out.println("GET POST");
 
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing Token");
-            }
-
-            String token = authHeader.substring(7);
-            if (!jwtService.validateToken(token)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Token");
-            }
-
-            // token is valid → continue to fetch user data
-            List<userEntity> users = userService.getAllUsers();
-            return ResponseEntity.ok(users);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing Token");
         }
+
+        String token = authHeader.substring(7);
+        if (!jwtService.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Token");
+        }
+
+        // token is valid → continue to fetch user data
+        List<userEntity> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
 
 
     @GetMapping("getUserId/{id}")

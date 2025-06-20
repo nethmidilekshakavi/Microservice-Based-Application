@@ -3,7 +3,6 @@ package com.example.userservice.service.Impl;
 import com.example.userservice.entity.userEntity;
 import com.example.userservice.service.JWTService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;

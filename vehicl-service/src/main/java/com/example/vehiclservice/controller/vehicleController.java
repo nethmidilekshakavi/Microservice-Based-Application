@@ -20,19 +20,19 @@ public class vehicleController {
         return "vehicle service";
     }
 
-
     @PostMapping("/save")
-    public ResponseEntity<Void> registerVehicle(@RequestBody vehicleDto vehicleDto, @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Void> registerVehicle(@RequestBody vehicleDto vehicleDto,
+                                                @RequestHeader("Authorization") String authHeader) {
         try {
-            boolean vehicleDto1 =vehicleServive.RegisterVehicle(vehicleDto, authHeader);
-
-            if (vehicleDto1){
+            boolean saved = vehicleServive.RegisterVehicle(vehicleDto, authHeader);
+            if (saved) {
                 return new ResponseEntity<>(HttpStatus.CREATED);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
 

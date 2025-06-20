@@ -47,7 +47,7 @@ public class VehicleServiceImpl implements VehicleServive {
 
         System.out.println(response);
 
-        // Optional: check if user exists
+
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             Vehicle_entity vehicle = modelMapper.map(vehicleDto, Vehicle_entity.class);
             vehicleRepo.save(vehicle);

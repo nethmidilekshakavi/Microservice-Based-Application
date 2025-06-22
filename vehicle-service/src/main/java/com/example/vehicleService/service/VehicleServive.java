@@ -1,7 +1,7 @@
-package com.example.vehiclservice.service;
-
-import com.example.vehiclservice.dto.vehicleDto;
+package com.example.vehicleService.service;
 
 public interface VehicleServive {
+/*
     boolean RegisterVehicle(vehicleDto vehicleDto,String token);
+*/
 }

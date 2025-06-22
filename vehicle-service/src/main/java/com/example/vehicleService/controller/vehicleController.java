@@ -1,11 +1,7 @@
-package com.example.vehiclservice.controller;
+package com.example.vehicleService.controller;
 
-import com.example.vehiclservice.dto.vehicleDto;
-import com.example.vehiclservice.service.VehicleServive;
+import com.example.vehicleService.service.VehicleServive;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,10 +11,14 @@ public class vehicleController {
     @Autowired
     private VehicleServive vehicleServive;
 
-    @GetMapping("all")
-    public String getVehicles() {
+
+    @GetMapping("/all")
+    public String getVehicle(){
         return "vehicle service";
     }
+
+/*
+
 
     @PostMapping("/save")
     public ResponseEntity<Void> registerVehicle(@RequestBody vehicleDto vehicleDto,
@@ -33,7 +33,7 @@ public class vehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
+    }*/
 }
 
 

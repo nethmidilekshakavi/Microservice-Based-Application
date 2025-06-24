@@ -20,11 +20,12 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="vehicle-service" />
+        <module name="vehicl-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="parking-service" target="1.5" />
+      <module name="vehicle-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -35,6 +36,7 @@
       <module name="parking-service" options="" />
       <module name="payment-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
+      <module name="vehicl-service" options="-parameters" />
       <module name="vehicle-service" options="-parameters" />
     </option>
   </component>

@@ -1,6 +1,6 @@
-package com.example.vehicleService.repo;
+package com.example.vehiclservice.repo;
 
-import com.example.vehicleService.entity.Vehicle_entity;
+import com.example.vehiclservice.entity.Vehicle_entity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -129,4 +129,16 @@ public class userController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        Optional<userEntity> user = userRepo.findById(id);
+        if (user.isPresent()) {
+            UserDto userDto = modelMapper.map(user.get(), UserDto.class);
+            return ResponseEntity.ok(userDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

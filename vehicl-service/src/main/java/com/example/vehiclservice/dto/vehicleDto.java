@@ -1,5 +1,7 @@
-package com.example.vehicleService.dto;
+package com.example.vehiclservice.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.NamedEntityGraph;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

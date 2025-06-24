@@ -1,4 +1,4 @@
-package com.example.vehicleService;
+package com.example.vehiclservice;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;

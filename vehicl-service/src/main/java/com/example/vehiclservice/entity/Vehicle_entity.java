@@ -1,7 +1,8 @@
-package com.example.vehicleService.entity;
+package com.example.vehiclservice.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -26,6 +26,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/parking-service/pom.xml" />
+        <option value="$PROJECT_DIR$/vehicle-service/pom.xml" />
       </set>
     </option>
   </component>

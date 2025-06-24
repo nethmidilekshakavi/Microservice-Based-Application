@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>vehicle-service</artifactId>
+    <artifactId>vehicl-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>vehicle-service</name>
     <description>vehicle-service</description>
@@ -116,6 +116,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

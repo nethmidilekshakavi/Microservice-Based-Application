@@ -12,4 +12,5 @@ public interface Parking_spaceService {
     boolean deleteSpace(Long id,String authHeader);
     List<Parking_Space> getAllSpaces();
 
+
 }

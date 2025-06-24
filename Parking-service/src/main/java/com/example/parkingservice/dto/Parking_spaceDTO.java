@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Parking_spaceDTO {
     private String location;
-    private boolean isAvailable;
+    private boolean isAvailable = true;
     private String zone;
     private Long userId;
 }

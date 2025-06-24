@@ -2,6 +2,7 @@ package com.example.parkingservice.controller;
 
 import com.example.parkingservice.dto.Parking_spaceDTO;
 import com.example.parkingservice.entity.Parking_Space;
+import com.example.parkingservice.repo.ParkingRepo;
 import com.example.parkingservice.service.Parking_spaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,9 @@ public class parking_spaceController {
 
     @Autowired
     private Parking_spaceService parkingSpaceService;
+
+    @Autowired
+    private ParkingRepo parkingRepo;
 
     @GetMapping("all")
     public String getParking(){
@@ -56,6 +60,12 @@ public class parking_spaceController {
     @GetMapping("/getAll")
     public List<Parking_Space> getAllSpaces(){
         return parkingSpaceService.getAllSpaces();
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<Parking_Space>> getAvailableSpaces() {
+        List<Parking_Space> availableSpaces = parkingRepo.findAllByIsAvailableTrue();
+        return ResponseEntity.ok(availableSpaces);
     }
 
 }

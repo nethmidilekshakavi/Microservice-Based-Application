@@ -19,21 +19,14 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
 
-    private LocalDateTime startTime; // වෙන්කළ ආරම්භ වේලාව
-    private LocalDateTime endTime; // අවසන් වේලාව
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String status; // "ACTIVE", "COMPLETED", "CANCELLED"
 
-    @ManyToOne
-    @JoinColumn(name = "space_id")
-    private Parking_Space parkingSpace;
+    private boolean parkingSpace;
 
-/*    @ManyToOne
-    @JoinColumn(name = "vehicle_id")
-    private ve;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;*/
+    private Long vehicleId;
+    private Long userId;
 
 
 }

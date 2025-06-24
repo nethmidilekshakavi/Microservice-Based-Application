@@ -2,7 +2,9 @@ package com.example.vehiclservice.controller;
 
 import com.example.vehiclservice.dto.vehicleDto;
 import com.example.vehiclservice.entity.Vehicle_entity;
+import com.example.vehiclservice.repo.VehicleRepo;
 import com.example.vehiclservice.service.VehicleServive;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/vehicle")
@@ -17,6 +20,10 @@ public class vehicleController {
 
     @Autowired
     private VehicleServive vehicleServive;
+    @Autowired
+    private VehicleRepo vehicleRepo;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/all")
     public String getVehicle() {
@@ -57,6 +64,19 @@ public class vehicleController {
     @GetMapping("/getAll")
     public List<Vehicle_entity> getAllVehicles(){
         return vehicleServive.getAllVehicles();
+    }
+
+
+    //get Vehicle Id
+    @GetMapping("/{id}")
+    public ResponseEntity<vehicleDto> getUserById(@PathVariable Long id) {
+        Optional<Vehicle_entity> user = vehicleRepo.findById(id);
+        if (user.isPresent()) {
+            vehicleDto vehicleDto = modelMapper.map(user.get(), vehicleDto.class);
+            return ResponseEntity.ok(vehicleDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

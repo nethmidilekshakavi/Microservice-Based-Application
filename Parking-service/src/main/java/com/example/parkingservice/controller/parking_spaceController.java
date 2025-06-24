@@ -4,12 +4,14 @@ import com.example.parkingservice.dto.Parking_spaceDTO;
 import com.example.parkingservice.entity.Parking_Space;
 import com.example.parkingservice.repo.ParkingRepo;
 import com.example.parkingservice.service.Parking_spaceService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/parkingSpace")
@@ -20,6 +22,9 @@ public class parking_spaceController {
 
     @Autowired
     private ParkingRepo parkingRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("all")
     public String getParking(){
@@ -68,4 +73,14 @@ public class parking_spaceController {
         return ResponseEntity.ok(availableSpaces);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Parking_spaceDTO> getSpaceById(@PathVariable Long id) {
+        Optional<Parking_Space> user = parkingRepo.findById(id);
+        if (user.isPresent()) {
+            Parking_spaceDTO parkingSpaceDTO = modelMapper.map(user.get(), Parking_spaceDTO.class);
+            return ResponseEntity.ok(parkingSpaceDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

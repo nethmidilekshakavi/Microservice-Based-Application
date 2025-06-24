@@ -130,7 +130,7 @@ public class userController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getVehicleById(@PathVariable Long id) {
         Optional<userEntity> user = userRepo.findById(id);
         if (user.isPresent()) {
             UserDto userDto = modelMapper.map(user.get(), UserDto.class);

@@ -12,11 +12,9 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RequestMapping("api/v1/parkingSpace")
 @RestController
@@ -45,14 +43,15 @@ public class ReservationController {
 
     @GetMapping("reservationGetId/{id}")
     public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long id) {
-        Optional<Reservation> reservation = reservationRepo.findById(id);
-        if (reservation.isPresent()) {
-            ReservationDto reservationDto = modelMapper.map(reservation.get(), ReservationDto.class);
+        Optional<Reservation> optionalReservation = reservationRepo.findById(id);
+        if (optionalReservation.isPresent()) {
+            ReservationDto reservationDto = modelMapper.map(optionalReservation.get(), ReservationDto.class);
             return ResponseEntity.ok(reservationDto);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @PutMapping("/complete/{id}")
     public ResponseEntity<?> updateStatus(@PathVariable Long id) {
@@ -68,15 +67,39 @@ public class ReservationController {
     }
 
 
+
     @GetMapping("reservationGetId/getAmount/{id}")
-    public ResponseEntity<Double> createAmount(@PathVariable  Long id,@RequestBody ReservationDto reservationDto,
+    public ResponseEntity<Double> createAmount(@PathVariable  Long id,
                                                @RequestHeader("Authorization") String authHeader) {
 
-        double amount = reservationService.calculateAmount(id, reservationDto, authHeader);
+        double amount = reservationService.calculateAmount(id,authHeader);
         if (amount == 0.0) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0.0);
         } else {
             return ResponseEntity.ok(amount);
+        }
+    }
+
+
+    @GetMapping("vehicleIdByReservation/{vehicleId}")
+    public ResponseEntity<Long> getReservationByVehicleId(@PathVariable Long vehicleId) {
+        Optional<Reservation> optionalReservation = reservationRepo.findById(vehicleId);
+        if (optionalReservation.isPresent()) {
+            Long vehicleId1 = optionalReservation.get().getVehicleId();
+            return ResponseEntity.ok(vehicleId1);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("userIdByReservation/{userId}")
+    public ResponseEntity<Long> getReservationByUserId(@PathVariable Long userId) {
+        Optional<Reservation> optionalReservation = reservationRepo.findById(userId);
+        if (optionalReservation.isPresent()) {
+            Long userIdd = optionalReservation.get().getUserId();
+            return ResponseEntity.ok(userIdd);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

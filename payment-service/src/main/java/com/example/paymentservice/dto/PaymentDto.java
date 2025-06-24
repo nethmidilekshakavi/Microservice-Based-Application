@@ -13,7 +13,7 @@ public class PaymentDto {
     private Double amount; // මුදල
     private String paymentMethod; // කාඩ් / QR / Mock
     private String paymentStatus; // "SUCCESS", "FAILED", "PENDING"
-    private LocalDateTime paymentTime; // ගෙවීමේ වේලාව
+    private LocalDateTime paymentTime;
     private Long UserId;
     private Long ReservationId;
     private Long vehicleId;

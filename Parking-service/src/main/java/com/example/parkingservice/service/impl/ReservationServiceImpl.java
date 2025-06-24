@@ -10,9 +10,12 @@ import com.example.parkingservice.repo.ParkingRepo;
 import com.example.parkingservice.repo.ReservationRepo;
 import com.example.parkingservice.service.ReservationService;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
@@ -30,6 +33,8 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationRepo reservationRepo;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -115,7 +120,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public double calculateAmount(Long reservationId, ReservationDto reservationDto, String authHeader) {
+    public double calculateAmount(Long reservationId, String authHeader) {
         Optional<Reservation> optional = reservationRepo.findById(reservationId);
 
         if (optional.isEmpty()) {
@@ -123,12 +128,15 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         try {
+
+            Reservation reservationn = optional.get();//obj eka ganne meken
+
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", authHeader);
 
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-            String vehicleUrl = "http://localhost:8080/vehicle-service/api/v1/vehicle/" + reservationDto.getVehicleId();
+            String vehicleUrl = "http://localhost:8080/vehicle-service/api/v1/vehicle/" + reservationn.getVehicleId();
             ResponseEntity<vehicleDto> vehicleResponse = restTemplate.exchange(
                     vehicleUrl,
                     HttpMethod.GET,

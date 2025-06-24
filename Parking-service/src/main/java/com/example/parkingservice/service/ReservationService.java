@@ -6,5 +6,5 @@ public interface ReservationService {
 
     boolean saveReservation(ReservationDto reservationDto, String authHeader);
 
-    double calculateAmount(Long id,ReservationDto reservationDto,String authHeader);
+    double calculateAmount(Long id,String authHeader);
 }

@@ -25,7 +25,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="parking-service" target="1.5" />
-      <module name="vehicle-service" target="17" />
+      <module name="vehicle-service" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -37,7 +37,7 @@
       <module name="payment-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
       <module name="vehicl-service" options="-parameters" />
-      <module name="vehicle-service" options="-parameters" />
+      <module name="vehicle-service" options="" />
     </option>
   </component>
 </project>

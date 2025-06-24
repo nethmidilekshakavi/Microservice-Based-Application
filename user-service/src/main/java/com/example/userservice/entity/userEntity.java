@@ -30,6 +30,7 @@ public class userEntity implements UserDetails {
     @Column(columnDefinition = "LONGTEXT")
     private String image;
 
+    private boolean isActive;
 
 
     @Override
@@ -61,6 +62,7 @@ public class userEntity implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
 
 
 }

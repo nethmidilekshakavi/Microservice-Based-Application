@@ -12,26 +12,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/vehicle")
 public class vehicleController {
 
+    @Autowired
+    private VehicleServive vehicleServive;
 
     @GetMapping("/all")
     public String getVehicle() {
         return "vehicle service";
     }
 
-  /*  @PostMapping("/save")
-    public ResponseEntity<Void> registerVehicle(@RequestBody vehicleDto vehicleDto,
-                                                @RequestHeader("Authorization") String authHeader) {
-        try {
-            boolean saved = vehicleServive.RegisterVehicle(vehicleDto, authHeader);
-            if (saved) {
-                return new ResponseEntity<>(HttpStatus.CREATED);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }*/
+    @PostMapping("/save")
+    public ResponseEntity<?> registerVehicle(
+            @RequestBody vehicleDto vehicleDto,
+            @RequestHeader("Authorization") String authHeader) {
+        System.out.println(vehicleDto);
+        boolean success = vehicleServive.registerVehicle(vehicleDto, authHeader);
+        return success ? ResponseEntity.ok("Vehicle registered") :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle registration failed");
+    }
+
 }
 
 

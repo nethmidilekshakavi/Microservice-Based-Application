@@ -1,20 +1,15 @@
-package com.example.paymentservice.entity;
+package com.example.paymentservice.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Payment_Entity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PaymentDto {
     private Long paymentId;
 
     private Double amount; // මුදල

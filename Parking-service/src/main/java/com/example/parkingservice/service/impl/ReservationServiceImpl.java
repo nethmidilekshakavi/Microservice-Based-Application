@@ -84,10 +84,7 @@ public class ReservationServiceImpl implements ReservationService {
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 UserDto userDto = response.getBody();
-                vehicleDto vehicleDto = response2.getBody();
                 Parking_spaceDTO parkingSpaceDTO = response3.getBody();
-
-
 
                 if (userDto != null && userDto.isActive()  & parkingSpaceDTO != null && parkingSpaceDTO.isAvailable()) {
                     Reservation reservation = new Reservation();
@@ -100,6 +97,7 @@ public class ReservationServiceImpl implements ReservationService {
                     System.out.println(reservation);
                     reservationRepo.save(reservation);
 
+                    //update karanwa space eka  No available parking space
                     Optional<Parking_Space> optionalParkingSpace = parkingRepo.findById(reservationDto.getSpaceId());
                     if (optionalParkingSpace.isPresent()) {
                         Parking_Space parkingSpace = optionalParkingSpace.get();

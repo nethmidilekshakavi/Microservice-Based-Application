@@ -36,7 +36,7 @@ public class ReservationController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Reservation failed: No available parking space.");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("reservationGetId/{id}")
     public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long id) {
         Optional<Reservation> user = reservationRepo.findById(id);
         if (user.isPresent()) {

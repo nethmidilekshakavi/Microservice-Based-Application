@@ -30,6 +30,17 @@ public class vehicleController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle registration failed");
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateVehicle(@RequestBody vehicleDto vehicleDto,
+                                           @PathVariable Long id,
+                                           @RequestHeader("Authorization") String authHeader){
+
+
+        boolean success = vehicleServive.updateVehicle(vehicleDto, id,authHeader);
+        return success ? ResponseEntity.ok("Vehicle Updated") :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle update failed");
+
+    }
 }
 
 

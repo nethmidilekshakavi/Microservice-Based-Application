@@ -1,22 +1,15 @@
-package com.example.parkingservice.entity;
+package com.example.parkingservice.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Parking_Space {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long spaceId;
+public class Parking_spaceDTO {
     private String location;
     private boolean isAvailable;
     private String zone;
     private Long userId;
-
 }

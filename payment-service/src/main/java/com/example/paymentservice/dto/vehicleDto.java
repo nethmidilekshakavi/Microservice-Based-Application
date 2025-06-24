@@ -1,7 +1,5 @@
-package com.example.vehiclservice.dto;
+package com.example.paymentservice.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.NamedEntityGraph;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +14,7 @@ public class vehicleDto {
     private String color;
     private String type;
     private boolean isParked;
+    private String entryTime;
+    private String exitTime;
     private Long userId;
 }

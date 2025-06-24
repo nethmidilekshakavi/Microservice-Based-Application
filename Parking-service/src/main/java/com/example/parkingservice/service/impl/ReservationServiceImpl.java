@@ -11,13 +11,11 @@ import com.example.parkingservice.repo.ReservationRepo;
 import com.example.parkingservice.service.ReservationService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -40,10 +38,6 @@ public class ReservationServiceImpl implements ReservationService {
         System.out.println("reservation ekata awa");
         List<Parking_Space> existing = parkingRepo.findAllByIsAvailableTrue();
         System.out.println("--------------------------"+existing);
-        reservationDto.setStartTime(LocalDateTime.now());
-        reservationDto.setEndTime(LocalDateTime.now());
-        System.out.println("start time -  "+reservationDto.getStartTime());
-        System.out.println("end time -  "+reservationDto.getEndTime());
         if (existing.isEmpty()) {
             System.out.println("Not Available");
             return false;
@@ -119,4 +113,78 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
     }
+
+    @Override
+    public double calculateAmount(Long reservationId, ReservationDto reservationDto, String authHeader) {
+        Optional<Reservation> optional = reservationRepo.findById(reservationId);
+
+        if (optional.isEmpty()) {
+            return 0.0;
+        }
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", authHeader);
+
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+            String vehicleUrl = "http://localhost:8080/vehicle-service/api/v1/vehicle/" + reservationDto.getVehicleId();
+            ResponseEntity<vehicleDto> vehicleResponse = restTemplate.exchange(
+                    vehicleUrl,
+                    HttpMethod.GET,
+                    entity,
+                    vehicleDto.class
+            );
+
+            if (!vehicleResponse.getStatusCode().is2xxSuccessful() || vehicleResponse.getBody() == null) {
+                return 0.0;
+            }
+
+            vehicleDto vehicle = vehicleResponse.getBody();
+            System.out.println("Vehicle Details: " + vehicle);
+
+            Reservation reservation = optional.get();
+            LocalDateTime start = reservation.getStartTime();
+            LocalDateTime end = reservation.getEndTime();
+
+
+            long hours = Duration.between(start, end).toHours();
+            if (hours == 0) {
+                hours = 1;
+            }
+
+            System.out.println("Total parking hours: " + hours);
+
+
+            double totalAmount;
+
+            switch (vehicle.getType().toLowerCase()) {
+                case "car":
+                    totalAmount = hours * 700;
+                    break;
+                case "van":
+                    totalAmount = hours * 800;
+                    break;
+                case "bike":
+                    totalAmount = hours * 300;
+                    break;
+                case "3wheel":
+                    totalAmount = hours * 500;
+                    break;
+                default:
+                    totalAmount = hours * 1000;
+                    break;
+            }
+
+            return totalAmount;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+    }
+
+
+
 }

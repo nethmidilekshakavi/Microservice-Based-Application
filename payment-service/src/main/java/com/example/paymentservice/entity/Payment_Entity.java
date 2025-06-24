@@ -23,4 +23,5 @@ public class Payment_Entity {
     private LocalDateTime paymentTime; // ගෙවීමේ වේලාව
     private Long UserId;
     private Long ReservationId;
+    private Long vehicleId;
 }

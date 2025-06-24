@@ -66,8 +66,6 @@ public class VehicleServiceImpl implements VehicleServive {
                     vehicle.setColor(vehicleDto.getColor());
                     vehicle.setType(vehicleDto.getType());
                     vehicle.setParked(vehicleDto.isParked());
-                    vehicle.setEntryTime(vehicleDto.getEntryTime());
-                    vehicle.setExitTime(vehicleDto.getExitTime());
                     vehicle.setUserId(vehicleDto.getUserId());
 
                     vehicleRepo.save(vehicle);
@@ -119,8 +117,6 @@ public class VehicleServiceImpl implements VehicleServive {
                     vehicle.setColor(vehicleDto.getColor());
                     vehicle.setType(vehicleDto.getType());
                     vehicle.setParked(vehicleDto.isParked());
-                    vehicle.setEntryTime(vehicleDto.getEntryTime());
-                    vehicle.setExitTime(vehicleDto.getExitTime());
                     vehicle.setUserId(vehicleDto.getUserId());
 
                     vehicleRepo.save(vehicle);

@@ -35,9 +35,5 @@ public class Vehicle_entity {
     @Column(nullable = false)
     private Long userId;
 
-    @Column
-    private String entryTime;
 
-    @Column
-    private String exitTime;
 }

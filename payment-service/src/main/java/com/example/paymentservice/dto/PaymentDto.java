@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class PaymentDto {
-    private Long paymentId;
-
     private Double amount; // මුදල
     private String paymentMethod; // කාඩ් / QR / Mock
     private String paymentStatus; // "SUCCESS", "FAILED", "PENDING"
     private LocalDateTime paymentTime; // ගෙවීමේ වේලාව
     private Long UserId;
     private Long ReservationId;
+    private Long vehicleId;
+
 }

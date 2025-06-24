@@ -7,6 +7,7 @@ import com.example.vehiclservice.repo.VehicleRepo;
 import com.example.vehiclservice.service.VehicleServive;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -141,6 +143,25 @@ public class VehicleServiceImpl implements VehicleServive {
         }
     }
 
+    @Override
+    public boolean deleteVehicle(Long id, String authHeader) {
+        Optional<Vehicle_entity> optionalUser = vehicleRepo.findById(id);
+
+        if (optionalUser.isPresent()){
+            vehicleRepo.deleteById(id);
+            System.out.println("Vehicle delete successfully.");
+            return true;
+        }else {
+            System.out.println("Vehicle delete Failed.");
+            return false;
+        }
+
+    }
+
+    @Override
+    public List<Vehicle_entity> getAllVehicles() {
+            return modelMapper.map(vehicleRepo.findAll(), new TypeToken<List<vehicleDto>>(){}.getType());
+    }
 
 
 }

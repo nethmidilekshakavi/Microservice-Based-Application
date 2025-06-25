@@ -35,7 +35,7 @@ This project is a **cloud-native smart parking management system** designed usin
 
 ---
 
-## 🖼️ Screenshots
+![Eureka DashBoard](screenShot/Screenshot%202025-06-25%20184837.png)
 
 | Feature              | Screenshot |
 |----------------------|------------|
@@ -51,7 +51,7 @@ This project is a **cloud-native smart parking management system** designed usin
 
 All REST APIs are tested using Postman. You can import the collection below:
 
-📎 [Download Postman Collection](./postman_collection.json)
+📎 [Download Postman Collection](Smart%20Parking%20Management%20System.postman_collection.json)
 
 ---
 
@@ -80,18 +80,6 @@ All REST APIs are tested using Postman. You can import the collection below:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## Future Improvements
-
-- Implementing advanced search filters for routes, vehicle types, and dates.
-- Using AJAX for seamless form submissions and dynamic vehicle availability.
-- Adding real-time booking confirmation with notifications.
-- Integration with Google Maps for route previews.
-- Enhancing admin control with detailed analytics.
-
----
 
 ## Acknowledgments
 

@@ -215,8 +215,15 @@ public class PaymentServiceImpl implements PaymentService {
                     );
                 }
 
+                //vehicle status update wenwa
+                String notParkedVehicle = "http://localhost:8080/vehicle-service/api/v1/vehicle/isNotParking/" + paymentDto.getVehicleId();
 
-
+                restTemplate.exchange(
+                        notParkedVehicle,
+                        HttpMethod.PUT,
+                        entity,
+                        String.class
+                );
 
                 System.out.println("Payment saved successfully!");
                 return true;

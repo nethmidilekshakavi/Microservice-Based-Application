@@ -97,12 +97,25 @@ public class vehicleController {
     public ResponseEntity<?> updateIsNotParking(@PathVariable Long id) {
         Optional<Vehicle_entity> optional = vehicleRepo.findById(id);
         if (optional.isPresent()) {
-            Vehicle_entity reservation = optional.get();
-            reservation.setStatus(Vehicle_entity.ParkingStatus.NOT_PARKED);
-            vehicleRepo.save(reservation);
-            return ResponseEntity.ok("Reservation status Updated");
+            Vehicle_entity vehicle = optional.get();
+            vehicle.setStatus(Vehicle_entity.ParkingStatus.NOT_PARKED);
+            vehicleRepo.save(vehicle);
+            return ResponseEntity.ok("Vehicle status updated to NOT_PARKED");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
+        }
+    }
+
+    @PutMapping("/Parking/{id}")
+    public ResponseEntity<?> updateParking(@PathVariable Long id) {
+        Optional<Vehicle_entity> optional = vehicleRepo.findById(id);
+        if (optional.isPresent()) {
+            Vehicle_entity vehicle = optional.get();
+            vehicle.setStatus(Vehicle_entity.ParkingStatus.PARKED);
+            vehicleRepo.save(vehicle);
+            return ResponseEntity.ok("Vehicle status updated to PARKED");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
         }
     }
 

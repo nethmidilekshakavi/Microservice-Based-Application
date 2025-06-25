@@ -105,6 +105,15 @@ public class ReservationServiceImpl implements ReservationService {
                         parkingRepo.save(parkingSpace);
                     }
 
+                    //vehicle eka park
+                    String park = "http://localhost:8080/vehicle-service/api/v1/vehicle/Parking/" + reservationDto.getVehicleId();
+
+                    restTemplate.exchange(
+                            park,
+                            HttpMethod.PUT,
+                            entity,
+                            String.class
+                    );
 
                     return true;
                 } else {

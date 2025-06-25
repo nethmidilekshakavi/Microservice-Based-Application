@@ -40,6 +40,7 @@ public class vehicleController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle registration failed");
     }
 
+
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateVehicle(@RequestBody vehicleDto vehicleDto,
                                            @PathVariable Long id,
@@ -51,6 +52,7 @@ public class vehicleController {
 
     }
 
+
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteVehicle(@PathVariable Long id,
                                            @RequestHeader("Authorization") String authHeader){
@@ -60,6 +62,7 @@ public class vehicleController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle delete failed");
 
     }
+
 
     @GetMapping("/getAll")
     public List<Vehicle_entity> getAllVehicles(){
@@ -79,6 +82,7 @@ public class vehicleController {
         }
     }
 
+
 //http://localhost:8081/vehicle-service/api/v1/vehicle/isParking
     @PutMapping("/isParking/{id}")
     public ResponseEntity<?> updateIsParking(@PathVariable Long id) {
@@ -93,6 +97,7 @@ public class vehicleController {
         }
     }
 
+
     @PutMapping("/isNotParking/{id}")
     public ResponseEntity<?> updateIsNotParking(@PathVariable Long id) {
         Optional<Vehicle_entity> optional = vehicleRepo.findById(id);
@@ -105,6 +110,7 @@ public class vehicleController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
         }
     }
+
 
     @PutMapping("/Parking/{id}")
     public ResponseEntity<?> updateParking(@PathVariable Long id) {

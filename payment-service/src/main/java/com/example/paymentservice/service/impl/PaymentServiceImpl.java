@@ -30,105 +30,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepo paymentRepo;
 
-   /* @Override
-    public boolean savePayment(PaymentDto paymentDto, String authHeader) {
-        System.out.println("payment ekata awa");
-
-
-        System.out.println("user id" + paymentDto.getUserId());
-
-        String user = "http://localhost:8080/parking-service/api/v1/parkingSpace/userIdByReservation/" + paymentDto.getReservationId();
-        String vehicle = "http://localhost:8080/parking-service/api/v1/parkingSpace/vehicleIdByReservation/" + paymentDto.getReservationId();
-        String space = "http://localhost:8080/parking-service/api/v1/parkingSpace/reservationGetId/" + paymentDto.getReservationId();
-        String TotalAmount = "http://localhost:8080/parking-service/api/v1/parkingSpace/reservationGetId/getAmount/" + paymentDto.getReservationId();
-
-        paymentDto.setPaymentTime(LocalDateTime.now());
-
-        System.out.println("wghdhysgdhsjfhdsjkfjdk--------------------");
-
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", authHeader);
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<Long> response = restTemplate.exchange(
-                    user,
-                    HttpMethod.GET,
-                    entity,
-                    Long.class
-            );
-
-
-
-            ResponseEntity<Long> response3 = restTemplate.exchange(
-                    space,
-                    HttpMethod.GET,
-                    entity,
-                    Long.class
-            );
-
-            ResponseEntity<Long> response4 = restTemplate.exchange(
-                    vehicle,
-                    HttpMethod.GET,
-                    entity,
-                    Long.class
-            );
-
-            ResponseEntity<Double> response5 = restTemplate.exchange(
-                    TotalAmount,
-                    HttpMethod.GET,
-                    entity,
-                    Double.class
-            );
-
-
-
-            if (response.getStatusCode().is2xxSuccessful() && response3.getStatusCode().is2xxSuccessful()
-                     && response4.getStatusCode().is2xxSuccessful()
-                    && response5.getStatusCode().is2xxSuccessful()
-            ) {
-
-
-                Long reservationDto = response3.getBody();
-
-                if (reservationDto != null) {
-                    Payment_Entity payment = new Payment_Entity();
-                    payment.setPaymentMethod(paymentDto.getPaymentMethod());
-                    payment.setPaymentStatus(paymentDto.getPaymentStatus());
-                    payment.setPaymentTime(paymentDto.getPaymentTime());
-                    payment.setAmount(paymentDto.getAmount());
-                    payment.setReservationId(paymentDto.getReservationId());
-                    payment.setVehicleId(paymentDto.getVehicleId());
-                    payment.setUserId(paymentDto.getUserId());
-                    System.out.println(payment);
-                    paymentRepo.save(payment);
-
-                    System.out.println(payment);
-
-                    Optional<Payment_Entity> optionalPaymentEntity = paymentRepo.findById(Long.valueOf(paymentDto.getPaymentStatus()));
-                    if (optionalPaymentEntity.isPresent()) {
-                        Payment_Entity status = optionalPaymentEntity.get();
-                        status.setPaymentStatus("SUCCESS");
-                        paymentRepo.save(status);
-                    }
-
-                    ReservationDto re = response4.getBody();
-                    System.out.println("status update: " + re);
-
-                    re.setStatus("COMPLETED");
-
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
 
     @Override
     public boolean savePayment(PaymentDto paymentDto, String authHeader) {
@@ -136,7 +37,6 @@ public class PaymentServiceImpl implements PaymentService {
         System.out.println("payment ekata awa");
 
         paymentDto.setPaymentTime(LocalDateTime.now());
-
 
 
         String userUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/userIdByReservation/" + paymentDto.getReservationId();
@@ -173,12 +73,9 @@ public class PaymentServiceImpl implements PaymentService {
                 payment.setPaymentTime(paymentDto.getPaymentTime());
                 payment.setPaymentStatus("SUCCESS");
 
-
-
-
                 paymentRepo.save(payment);
 
-                //
+
                 String completeStatusUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/complete/" + paymentDto.getReservationId();
 
                 restTemplate.exchange(

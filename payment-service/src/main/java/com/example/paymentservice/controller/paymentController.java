@@ -33,7 +33,7 @@ public class paymentController {
 
         if (paymentRepo.existsByReservationId(paymentDto.getReservationId())) {
             System.out.println("Can't save payment");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment already exists for this reservation");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment already have");
         }
 
         boolean success = paymentService.savePayment(paymentDto, authHeader);

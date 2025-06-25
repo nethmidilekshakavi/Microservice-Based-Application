@@ -38,10 +38,8 @@ public class LoginController {
 
         System.out.println("Login Request with Authorization header: " + authHeader);
 
-        // 1. Perform authentication
         JWTAuthResponse response = authenticationService.signIn(signIn);
 
-        // 2. Activate user after successful login
         Optional<userEntity> userOptional = userRepo.findByEmail(signIn.getEmail()); // or findByUsername()
 
         if (userOptional.isPresent()) {

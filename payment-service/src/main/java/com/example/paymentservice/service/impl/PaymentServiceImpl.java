@@ -132,9 +132,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public boolean savePayment(PaymentDto paymentDto, String authHeader) {
+
         System.out.println("payment ekata awa");
 
         paymentDto.setPaymentTime(LocalDateTime.now());
+
+
 
         String userUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/userIdByReservation/" + paymentDto.getReservationId();
         String vehicleUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/vehicleIdByReservation/" + paymentDto.getReservationId();
@@ -158,6 +161,8 @@ public class PaymentServiceImpl implements PaymentService {
             ResponseEntity<Double> amountResponse = restTemplate.exchange(amountUrl, HttpMethod.GET, entity, Double.class);
             Double totalAmount = amountResponse.getBody();
 
+
+
             if (userId != null && vehicleId != null && reservationDto != null && totalAmount != null) {
                 Payment_Entity payment = new Payment_Entity();
                 payment.setUserId(userId);
@@ -167,6 +172,9 @@ public class PaymentServiceImpl implements PaymentService {
                 payment.setPaymentMethod(paymentDto.getPaymentMethod());
                 payment.setPaymentTime(paymentDto.getPaymentTime());
                 payment.setPaymentStatus("SUCCESS");
+
+
+
 
                 paymentRepo.save(payment);
 

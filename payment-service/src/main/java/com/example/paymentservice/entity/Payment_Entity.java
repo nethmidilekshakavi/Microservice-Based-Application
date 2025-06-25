@@ -22,6 +22,7 @@ public class Payment_Entity {
     private String paymentStatus; // "SUCCESS", "FAILED", "PENDING"
     private LocalDateTime paymentTime;
     private Long UserId;
-    private Long ReservationId;
+    @Column(name = "reservation_id")
+    private Long reservationId;
     private Long vehicleId;
 }

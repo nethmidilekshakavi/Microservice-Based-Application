@@ -73,7 +73,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Acknowledgments
 
-Special thanks to the instructors, mentors, and teammates who provided guidance and support throughout the development of this system.
-
+Heartfelt thanks to the instructors whose guidance and support were instrumental in the successful development of this system.
 
 

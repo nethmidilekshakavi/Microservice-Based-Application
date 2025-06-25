@@ -1,12 +1,12 @@
 package com.example.paymentservice.service.impl;
 
-import com.example.paymentservice.dto.PaymentDto;
-import com.example.paymentservice.dto.ReservationDto;
-import com.example.paymentservice.dto.UserDto;
-import com.example.paymentservice.dto.vehicleDto;
+import com.example.paymentservice.dto.*;
 import com.example.paymentservice.entity.Payment_Entity;
 import com.example.paymentservice.repo.PaymentRepo;
 import com.example.paymentservice.service.PaymentService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -16,9 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -33,11 +33,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public boolean savePayment(PaymentDto paymentDto, String authHeader) {
-
         System.out.println("payment ekata awa");
 
         paymentDto.setPaymentTime(LocalDateTime.now());
-
 
         String userUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/userIdByReservation/" + paymentDto.getReservationId();
         String vehicleUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/vehicleIdByReservation/" + paymentDto.getReservationId();
@@ -61,8 +59,6 @@ public class PaymentServiceImpl implements PaymentService {
             ResponseEntity<Double> amountResponse = restTemplate.exchange(amountUrl, HttpMethod.GET, entity, Double.class);
             Double totalAmount = amountResponse.getBody();
 
-
-
             if (userId != null && vehicleId != null && reservationDto != null && totalAmount != null) {
                 Payment_Entity payment = new Payment_Entity();
                 payment.setUserId(userId);
@@ -75,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService {
 
                 paymentRepo.save(payment);
 
-
+                //
                 String completeStatusUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/complete/" + paymentDto.getReservationId();
 
                 restTemplate.exchange(
@@ -143,4 +139,11 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 
+
+    @Override
+    public Optional<Payment_Entity> getTransactionById(Long id) {
+        return paymentRepo.findByPaymentId(id);
+    }
 }
+
+

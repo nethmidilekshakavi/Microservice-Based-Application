@@ -29,11 +29,15 @@ public class Vehicle_entity {
     @Column(nullable = false)
     private String type;
 
-    @Column
-    private boolean isParked = false;
+    @Enumerated(EnumType.STRING)
+    private ParkingStatus status;
 
     @Column(nullable = false)
     private Long userId;
 
+    public enum ParkingStatus {
+        PARKED,
+        NOT_PARKED
+    }
 
 }

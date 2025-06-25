@@ -10,12 +10,12 @@ import com.example.parkingservice.repo.ParkingRepo;
 import com.example.parkingservice.repo.ReservationRepo;
 import com.example.parkingservice.service.ReservationService;
 import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
@@ -33,8 +33,6 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationRepo reservationRepo;
     @Autowired
     private RestTemplate restTemplate;
-    @Autowired
-    private ModelMapper modelMapper;
 
 
     @Override
@@ -43,6 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
         System.out.println("reservation ekata awa");
         List<Parking_Space> existing = parkingRepo.findAllByIsAvailableTrue();
         System.out.println("--------------------------"+existing);
+
         if (existing.isEmpty()) {
             System.out.println("Not Available");
             return false;
@@ -83,20 +82,22 @@ public class ReservationServiceImpl implements ReservationService {
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 UserDto userDto = response.getBody();
+                vehicleDto vehicleDto = response2.getBody();
                 Parking_spaceDTO parkingSpaceDTO = response3.getBody();
+
+
 
                 if (userDto != null && userDto.isActive()  & parkingSpaceDTO != null && parkingSpaceDTO.isAvailable()) {
                     Reservation reservation = new Reservation();
                     reservation.setEndTime(reservationDto.getEndTime());
                     reservation.setStartTime(reservationDto.getStartTime());
-                    reservation.setStatus(Reservation.Status.valueOf(reservationDto.getStatus()));
+                    reservation.setStatus(Reservation.Status.ACTIVE);
                     reservation.setSpaceId(reservationDto.getSpaceId());
                     reservation.setUserId(reservationDto.getUserId());
                     reservation.setVehicleId(reservationDto.getVehicleId());
                     System.out.println(reservation);
                     reservationRepo.save(reservation);
 
-                    //update karanwa space eka  No available parking space
                     Optional<Parking_Space> optionalParkingSpace = parkingRepo.findById(reservationDto.getSpaceId());
                     if (optionalParkingSpace.isPresent()) {
                         Parking_Space parkingSpace = optionalParkingSpace.get();
@@ -192,7 +193,4 @@ public class ReservationServiceImpl implements ReservationService {
             return 0.0;
         }
     }
-
-
-
 }

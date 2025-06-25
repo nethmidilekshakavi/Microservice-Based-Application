@@ -170,14 +170,36 @@ public class PaymentServiceImpl implements PaymentService {
 
                 paymentRepo.save(payment);
 
+                //
                 String completeStatusUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/complete/" + paymentDto.getReservationId();
 
                 restTemplate.exchange(
                         completeStatusUrl,
                         HttpMethod.PUT,
-                        entity, // contains Authorization header
+                        entity,
                         String.class
                 );
+
+                //meken vehicle eka payment eka krl exit unama park wela na kiyl aye update weno vehicle table eke
+                String vehicleUpdateUrl = "http://localhost:8080/vehicle-service/api/v1/vehicle/isNotParking/" + paymentDto.getVehicleId();
+
+                restTemplate.exchange(
+                        vehicleUpdateUrl,
+                        HttpMethod.PUT,
+                        entity,
+                        String.class
+                );
+
+
+                String spaceUpdate = "http://localhost:8080/parking-service/api/v1/parkingSpace/available/" + paymentDto.getPaymentStatus();
+
+                restTemplate.exchange(
+                        spaceUpdate,
+                        HttpMethod.PUT,
+                        entity,
+                        String.class
+                );
+
 
 
                 System.out.println("Payment saved successfully!");

@@ -21,15 +21,19 @@ public class Reservation {
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private boolean parkingSpace;
     private Long spaceId;
     @Enumerated(EnumType.STRING)
     private Status status;
     private Long vehicleId;
     private Long userId;
 
+
     public enum Status {
         ACTIVE,
         COMPLETED,
         CANCELLED
     }
+
+
 }

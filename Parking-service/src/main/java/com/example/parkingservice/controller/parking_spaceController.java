@@ -2,6 +2,7 @@ package com.example.parkingservice.controller;
 
 import com.example.parkingservice.dto.Parking_spaceDTO;
 import com.example.parkingservice.entity.Parking_Space;
+import com.example.parkingservice.entity.Reservation;
 import com.example.parkingservice.repo.ParkingRepo;
 import com.example.parkingservice.service.Parking_spaceService;
 import org.modelmapper.ModelMapper;
@@ -67,11 +68,33 @@ public class parking_spaceController {
         return parkingSpaceService.getAllSpaces();
     }
 
-    @GetMapping("/available")
-    public ResponseEntity<List<Parking_Space>> getAvailableSpaces() {
-        List<Parking_Space> availableSpaces = parkingRepo.findAllByIsAvailableTrue();
-        return ResponseEntity.ok(availableSpaces);
+    @PutMapping("/Available/{id}")
+    public ResponseEntity<?> updateStatusAvailable(@PathVariable Long id) {
+        Optional<Parking_Space> optional = parkingRepo.findById(id);
+        if (optional.isPresent()) {
+            Parking_Space space = optional.get();
+            space.setAvailable(true);
+            parkingRepo.save(space);
+            return ResponseEntity.ok("Status updated to Available");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking space not found");
+        }
     }
+
+
+    @PutMapping("/NotAvailable/{id}")
+    public ResponseEntity<?> updateStatusNotAvailable(@PathVariable Long id) {
+        Optional<Parking_Space> optional = parkingRepo.findById(id);
+        if (optional.isPresent()) {
+            Parking_Space space = optional.get();
+            space.setAvailable(false);
+            parkingRepo.save(space);
+            return ResponseEntity.ok("Status updated to Not_Available");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parking space not found");
+        }
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Parking_spaceDTO> getSpaceById(@PathVariable Long id) {

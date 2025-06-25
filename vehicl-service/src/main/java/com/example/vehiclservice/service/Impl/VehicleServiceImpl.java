@@ -65,7 +65,7 @@ public class VehicleServiceImpl implements VehicleServive {
                     vehicle.setModel(vehicleDto.getModel());
                     vehicle.setColor(vehicleDto.getColor());
                     vehicle.setType(vehicleDto.getType());
-                    vehicle.setParked(vehicleDto.isParked());
+                    vehicle.setStatus(Vehicle_entity.ParkingStatus.NOT_PARKED);
                     vehicle.setUserId(vehicleDto.getUserId());
 
                     vehicleRepo.save(vehicle);
@@ -116,7 +116,7 @@ public class VehicleServiceImpl implements VehicleServive {
                     vehicle.setModel(vehicleDto.getModel());
                     vehicle.setColor(vehicleDto.getColor());
                     vehicle.setType(vehicleDto.getType());
-                    vehicle.setParked(vehicleDto.isParked());
+                    vehicle.setStatus(Vehicle_entity.ParkingStatus.NOT_PARKED);
                     vehicle.setUserId(vehicleDto.getUserId());
 
                     vehicleRepo.save(vehicle);

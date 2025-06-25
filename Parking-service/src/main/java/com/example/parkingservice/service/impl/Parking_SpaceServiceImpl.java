@@ -33,47 +33,43 @@ public class Parking_SpaceServiceImpl implements Parking_spaceService {
     private ModelMapper modelMapper;
 
     @Override
-    public boolean saveParkingSpace(Parking_spaceDTO parkingSpaceDTO,String authHeader) {
+    @Transactional
+    public boolean saveParkingSpace(Parking_spaceDTO parkingSpaceDTO, String authHeader) {
         System.out.println("space skata awa");
-
         System.out.println("parking id" + parkingSpaceDTO.getUserId());
 
         String url = "http://localhost:8080/user-service/api/v1/user/" + parkingSpaceDTO.getUserId();
 
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", authHeader);
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authHeader);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-            ResponseEntity<UserDto> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    entity,
-                    UserDto.class
-            );
+        ResponseEntity<UserDto> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                UserDto.class
+        );
 
-            if (response.getStatusCode().is2xxSuccessful()) {
-                UserDto userDto = response.getBody();
+        if (response.getStatusCode().is2xxSuccessful()) {
+            UserDto userDto = response.getBody();
 
-                if (userDto != null && userDto.isActive()) {
-                    Parking_Space space = new Parking_Space();
-                    space.setAvailable(parkingSpaceDTO.isAvailable());
-                    space.setZone(parkingSpaceDTO.getZone());
-                    space.setLocation(parkingSpaceDTO.getLocation());
-                    space.setUserId(parkingSpaceDTO.getUserId());
-                    parkingRepo.save(space);
-                    return true;
-                } else {
-                    return false;
-                }
+            if (userDto != null && userDto.isActive()) {
+                Parking_Space space = new Parking_Space();
+                space.setAvailable(parkingSpaceDTO.isAvailable());
+                space.setZone(parkingSpaceDTO.getZone());
+                space.setLocation(parkingSpaceDTO.getLocation());
+                space.setUserId(parkingSpaceDTO.getUserId());
+                parkingRepo.save(space);
+                return true;
             } else {
                 return false;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
             return false;
         }
     }
+
 
     @Override
     public boolean updateSpace(Parking_spaceDTO parkingSpaceDTO, Long id, String authHeader) {

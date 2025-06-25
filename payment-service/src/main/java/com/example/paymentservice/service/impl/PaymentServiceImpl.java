@@ -191,14 +191,30 @@ public class PaymentServiceImpl implements PaymentService {
                 );
 
 
-                String spaceUpdate = "http://localhost:8080/parking-service/api/v1/parkingSpace/available/" + paymentDto.getPaymentStatus();
+                // 1. get spaceId from reservationId
+                String spaceIdUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/getSpaceIdByReservation/" + paymentDto.getReservationId();
 
-                restTemplate.exchange(
-                        spaceUpdate,
-                        HttpMethod.PUT,
+                ResponseEntity<Long> spaceIdResponse = restTemplate.exchange(
+                        spaceIdUrl,
+                        HttpMethod.GET,
                         entity,
-                        String.class
+                        Long.class
                 );
+
+                Long spaceId = spaceIdResponse.getBody();
+
+                if (spaceId != null) {
+                    // 2. update space as available
+                    String spaceUpdateUrl = "http://localhost:8080/parking-service/api/v1/parkingSpace/Available/" + spaceId;
+
+                    restTemplate.exchange(
+                            spaceUpdateUrl,
+                            HttpMethod.PUT,
+                            entity,
+                            String.class
+                    );
+                }
+
 
 
 

@@ -103,4 +103,13 @@ public class ReservationController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    @GetMapping("/getSpaceIdByReservation/{reservationId}")
+    public ResponseEntity<Long> getSpaceIdByReservation(@PathVariable Long reservationId) {
+        Optional<Reservation> optional = reservationRepo.findById(reservationId);
+        return optional.map(res -> ResponseEntity.ok(res.getSpaceId()))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    }
+
 }

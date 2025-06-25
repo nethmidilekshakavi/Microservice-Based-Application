@@ -40,6 +40,7 @@ public class userController {
     }*/
 
 
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
 
@@ -73,7 +74,7 @@ public class userController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
+
     @PutMapping(value = "update/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable ("id") Long id,
                                            @RequestBody UserDto userDto) {
@@ -96,7 +97,6 @@ public class userController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteUser (@PathVariable ("id") Long id){
 
@@ -112,7 +112,7 @@ public class userController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @PutMapping("updateRole/{id}")
     public ResponseEntity<Void> updateRole (@PathVariable ("id") Long  id){
 
@@ -130,7 +130,7 @@ public class userController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getVehicleById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         Optional<userEntity> user = userRepo.findById(id);
         if (user.isPresent()) {
             UserDto userDto = modelMapper.map(user.get(), UserDto.class);

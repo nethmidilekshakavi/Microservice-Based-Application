@@ -10,7 +10,7 @@ This project is a **cloud-native smart parking management system** designed usin
 ### 👤 User Features
 - 🔐 **User Registration & Login** (JWT/Session-based)
 - 📍 **Real-time Parking Availability**
-- 🅿️ **Reserve Parking Slots** for Cars, Bikes, or Buses
+- 🅿️ **Reserve Parking Slots**
 - 💳 **Online Payment Integration**
 - 📖 **View Booking History**
 - 🚘 **Manage Multiple Vehicles**
@@ -36,16 +36,6 @@ This project is a **cloud-native smart parking management system** designed usin
 ---
 
 ![Eureka DashBoard](screenShot/Screenshot%202025-06-25%20184837.png)
-
-| Feature              | Screenshot |
-|----------------------|------------|
-| 🧭 Eureka Dashboard   | ![Eureka Dashboard](./docs/screenshots/eureka_dashboard.png) |
-| 🧪 Postman Testing    | ![Postman](https://via.placeholder.com/600x400.png?text=Postman+Collection) |
-| 🚗 Vehicle Form       | ![Vehicle Form](https://via.placeholder.com/600x400.png?text=Vehicle+Registration) |
-| 🅿️ Reserve Slot       | ![Reserve](https://via.placeholder.com/600x400.png?text=Reserve+Parking+Slot) |
-| 🛠️ Admin Panel        | ![Admin](https://via.placeholder.com/600x400.png?text=Zone+Management) |
-| 💳 Payment Receipt    | ![Receipt](https://via.placeholder.com/600x400.png?text=Payment+Receipt) |
-
 
 ## 📦 Postman Collection
 
